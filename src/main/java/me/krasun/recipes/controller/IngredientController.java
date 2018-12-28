@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import me.krasun.recipes.model.Ingredient;
+import me.krasun.recipes.model.ListedIngredient;
 import me.krasun.recipes.service.IngredientsService;
 
 @RestController
@@ -29,7 +29,15 @@ public class IngredientController {
     }
 
     @RequestMapping(method = GET, value = "/random")
-    public List<Ingredient> getRandomIngredients(@RequestParam(value = "number", defaultValue = "1") int number) {
-        return ingredientsService.getRandomIngredients(number);
+    public String getRandomIngredients(@RequestParam(value = "number", defaultValue = "1") int number) {
+        List<ListedIngredient> ingredients = ingredientsService.getListOfIngredients(number);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < ingredients.size(); i++) {
+            ListedIngredient ingredient = ingredients.get(i);
+            String s = String.format("%d. %s %s\n", i + 1, ingredient.getUnit(), ingredient.getName());
+            sb.append(s);
+
+        }
+        return sb.toString();
     }
 }

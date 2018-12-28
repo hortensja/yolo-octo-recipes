@@ -1,11 +1,15 @@
 package me.krasun.recipes.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
-@AllArgsConstructor
+import lombok.Data;
+import me.krasun.recipes.util.Randomizable;
+
 @Data
-public class CookingUnit {
+public class CookingUnit implements Randomizable<CookingUnit> {
 
     private MeasuringUnit measuringUnit;
 
@@ -14,5 +18,15 @@ public class CookingUnit {
     @Override
     public String toString(){
         return String.format("%f %s", qty, measuringUnit.getProperName(qty));
+    }
+
+    @Override
+    public CookingUnit randomize() {
+        List<MeasuringUnit> units = Arrays.asList(MeasuringUnit.values());
+        Collections.shuffle(units);
+        this.measuringUnit = units.get(0);
+        Random random = new Random();
+        this.qty = (1 + 0.25 * random.nextGaussian()) * measuringUnit.getReasonableAmount();
+        return this;
     }
 }

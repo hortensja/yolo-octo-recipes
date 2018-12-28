@@ -9,7 +9,7 @@ public class ListedIngredient {
 
     private String name;
 
-    private FoodGroupName foodGroup;
+    private FoodGroup foodGroup;
 
     private CookingUnit unit;
 

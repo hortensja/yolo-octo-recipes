@@ -1,5 +1,10 @@
 package me.krasun.recipes.model;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 public enum FoodGroupName {
     DAIRY_EGG("Dairy and Egg Products"),
     SPICE("Spices and Herbs"),
@@ -20,12 +25,23 @@ public enum FoodGroupName {
     SNACK("Snacks"),
     GRAIN("Cereal Grains and Pasta"),
     SOUP_SAUCE("Soups, Sauces, and Gravies"),
-    BABY("Baby Foods"),
-    CEREAL("Breakfast Cereals");
+    BABY("Baby Foods"), CEREAL("Breakfast Cereals"), OTHER("");
+
+    private static final Map<String, FoodGroupName> lookupMap;
+
+    static {
+        lookupMap = Arrays.stream(FoodGroupName.values())
+                .collect(Collectors.toMap(o -> o.name, Function.identity()));
+    }
 
     private String name;
 
     FoodGroupName(String name) {
         this.name = name;
+    }
+
+    public static FoodGroupName findGroup(String name) {
+        FoodGroupName foodGroupName = lookupMap.get(name);
+        return foodGroupName!= null? foodGroupName : OTHER;
     }
 }
